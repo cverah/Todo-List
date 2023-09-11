@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 const TodoItem = ({ id, title, checked, toggleTodo, deleteTodo }) => {
   return (
     <li key={id}>
@@ -16,6 +17,14 @@ const TodoItem = ({ id, title, checked, toggleTodo, deleteTodo }) => {
       </button>
     </li>
   );
+};
+
+TodoItem.propTypes = {
+  id: PropTypes.string,
+  title: PropTypes.string,
+  checked: PropTypes.bool,
+  toggleTodo: PropTypes.func,
+  deleteTodo: PropTypes.func,
 };
 
 export default TodoItem;
