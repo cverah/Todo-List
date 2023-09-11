@@ -1,10 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./styles.css";
 import NewTodoForm from "./components/NewTodoForm";
 import TodosList from "./components/TodosList";
 function App() {
+  //localstorage
+  //si hay un local storage que lo tome si no lo hay q sea una array []
+  const initialTodos = JSON.parse(localStorage.getItem("todos")) || [];
+
   //estado para los Todo List
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState(initialTodos);
+
+  //use effect
+  //cuando suceda algun cambio en la variable de estado todos que realice el disparado de localStorage
+  //,[todos] en corchetes por q es un arreglo
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
 
   function addTodo(title) {
     setTodos([
