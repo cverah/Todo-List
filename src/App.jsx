@@ -1,27 +1,20 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import "./styles.css";
+import NewTodoForm from "./components/NewTodoForm";
+import TodosList from "./components/TodosList";
 function App() {
-  //para el focus del input text
-  const inputRef = useRef(null);
-  //estado para los items del input text a agregar
-  const [newItem, setNewItem] = useState("");
   //estado para los Todo List
   const [todos, setTodos] = useState([]);
-  function handleChangeItem(event) {
-    setNewItem(event.target.value);
-  }
-  function handleAddTodo(event) {
-    event.preventDefault();
+
+  function addTodo(title) {
     setTodos([
       ...todos,
       {
         id: crypto.randomUUID(),
-        title: newItem,
+        title: title,
         completed: false,
       },
     ]);
-    setNewItem("");
-    inputRef.current.focus();
   }
 
   function toggleTodo(id, checked) {
@@ -44,49 +37,13 @@ function App() {
 
   return (
     <>
-      <form className="new-item-form" onSubmit={handleAddTodo}>
-        <div className="form-row">
-          <label htmlFor="txt_task">Name Task</label>
-          <input
-            type="text"
-            name=""
-            id="txt_task"
-            value={newItem}
-            onChange={handleChangeItem}
-            ref={inputRef}
-            required
-          />
-        </div>
-
-        <button className="btn">Add Task</button>
-      </form>
+      <NewTodoForm onSubmit={addTodo} />
       <h1 className="header">Todo List</h1>
-      <ul className="list">
-        {todos.length === 0 && "No Todos"}
-        {todos.map((todo) => {
-          return (
-            <li key={todo.id}>
-              <label>
-                <input
-                  type="checkbox"
-                  name=""
-                  id=""
-                  onChange={(event) =>
-                    toggleTodo(todo.id, event.target.checked)
-                  }
-                />
-                {todo.title}
-              </label>
-              <button
-                className="btn btn-danger"
-                onClick={() => deleteTodo(todo.id)}
-              >
-                Delete
-              </button>
-            </li>
-          );
-        })}
-      </ul>
+      <TodosList
+        todos={todos}
+        deleteTodo={deleteTodo}
+        toggleTodo={toggleTodo}
+      />
     </>
   );
 }
